@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "./axios";
-import requests from "./requests";
+import axios from "../../Api/axios";
+import requests from "../../Api/requests";
 import "./Banner.css";
 
 function Banner() {
@@ -40,8 +40,8 @@ function Banner() {
           {movie?.title || movie?.name || movie?.original_name}
         </h1>
         <div className="banner__buttons">
-          <button className="banner__button">Play</button>
-          <button className="banner__button">My List</button>
+          <button className="btn">Play</button>
+          <button className="btn">My List</button>
         </div>
         {/*div > 2 buttons */}
         {/*description*/}

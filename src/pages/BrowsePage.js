@@ -1,10 +1,12 @@
-import "./App.css";
-import BrowsePage from "./pages/BrowsePage";
+import Nav from "../components/MainPage/Nav";
+import Banner from "../components/MainPage/Banner";
+import requests from "../Api/requests";
+import Row from "../components/MainPage/Row";
 
-function App() {
+const BrowsePage = () => {
   return (
-    <div className="App">
-      {/* <Nav />
+    <>
+      <Nav />
       <Banner />
       <Row
         title="NETFLIX ORIGINALS"
@@ -17,10 +19,8 @@ function App() {
       <Row title="Comedy Movies" fetchUrl={requests.fetchComedyMovies} />
       <Row title="Horror Movies" fetchUrl={requests.fetchHorrorMovies} />
       <Row title="Romance Movies" fetchUrl={requests.fetchRomanceMovies} />
-      <Row title="Documentaries" fetchUrl={requests.fetchDocumentaries} /> */}
-      <BrowsePage />
-    </div>
+      <Row title="Documentaries" fetchUrl={requests.fetchDocumentaries} />
+    </>
   );
-}
-
-export default App;
+};
+export default BrowsePage;

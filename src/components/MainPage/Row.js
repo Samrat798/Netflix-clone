@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "./axios";
+import axios from "../../Api/axios";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
 import "./Row.css";
@@ -45,7 +45,10 @@ function Row({ title, fetchUrl, isLargeRow }) {
 
   return (
     <div className="row">
-      <h2>{title}</h2>
+      <div className="row-head">
+        <h2>{title}</h2>
+        <button className="btn explore-all">Explore All</button>
+      </div>
       <div className="row__posters">
         {movies.map((movie) => (
           <img
