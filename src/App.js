@@ -4,8 +4,10 @@ import SignUpPage from "./pages/SignUpPage";
 import BrowsePage from "./pages/BrowsePage";
 import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
+// import { userAuthListner } from "./components/content/userAuthListner";
 
 function App() {
+  // const { user } = userAuthListner();
   return (
     <BrowserRouter>
       <Routes>

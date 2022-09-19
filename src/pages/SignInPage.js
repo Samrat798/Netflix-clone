@@ -11,7 +11,7 @@ import SignFormInput from "../components/signin/SignFormInput";
 
 function SignInPage() {
   const navigate = useNavigate();
-  // const { firebase } = useContext(FirebaseContext);
+  const { firebase } = useContext(FirebaseContext);
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -19,20 +19,19 @@ function SignInPage() {
 
   const IsInvalid = password === "" || emailAddress === "";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // return firebase
-    //   .auth()
-    //   .signInWithAndPassword(emailAddress, password)
-    //   .then(() => {
-    //     navigate.push("/home");
-    //   })
-    //   .catch((error) => {
-    //     setEmailAddress("");
-    //     setPassword("");
-    //     setError(error.message);
-    //   });
-  };
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(emailAddress, password)
+      .then(() => {
+        setEmailAddress("");
+        setPassword("");
+        navigate("/browse");
+      })
+      .catch((error) => setError(error.message));
+  }
   return (
     <>
       <div className="header-wrapper-home">
@@ -63,7 +62,7 @@ function SignInPage() {
           </button>
           <p className="form-text">
             Already a user?
-            <a className="form-link" href="/signin">
+            <a className="form-link" href="/signup">
               Sign up now.
             </a>
           </p>

@@ -3,6 +3,7 @@ import Banner from "../components/MainPage/Banner";
 import requests from "../Api/requests";
 import Row from "../components/MainPage/Row";
 import "../components/MainPage/Row.css";
+import Footer from "../components/Footer/Footer";
 
 const BrowsePage = () => {
   return (
@@ -22,6 +23,7 @@ const BrowsePage = () => {
         <Row title="Horror Movies" fetchUrl={requests.fetchHorrorMovies} />
         <Row title="Romance Movies" fetchUrl={requests.fetchRomanceMovies} />
         <Row title="Documentaries" fetchUrl={requests.fetchDocumentaries} />
+        <Footer />
       </div>
     </>
   );

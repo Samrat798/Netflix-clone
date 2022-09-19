@@ -11,7 +11,7 @@ import SignFormInput from "../components/signin/SignFormInput";
 
 function SignUpPage() {
   const navigate = useNavigate();
-  // const { firebase } = useContext(FirebaseContext);
+  const { firebase } = useContext(FirebaseContext);
 
   const [firstName, setFirstName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -20,28 +20,26 @@ function SignUpPage() {
 
   const IsInvalid = password === "" || emailAddress === "" || firstName === "";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // return firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(emailAddress, password)
-    //   .then((result) =>
-    //     result.user
-    //       .updateProfile({
-    //         displayName: firstName,
-    //         photoURL: Math.floor(Math.random() * 5) + 1,
-    //       })
-    //       .then(() => {
-    //         navigate.push("/home");
-    //       })
-    //   )
-    //   .catch((error) => {
-    //     setFirstName("");
-    //     setEmailAddress("");
-    //     setPassword("");
-    //     setError(error.message);
-    //   });
-  };
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(emailAddress, password)
+      .then((result) =>
+        result.user
+          .updateProfile({
+            displayName: firstName,
+          })
+          .then(() => {
+            setFirstName("");
+            setEmailAddress("");
+            setPassword("");
+            navigate("/browse");
+          })
+      )
+      .catch((error) => setError(error.message));
+  }
   return (
     <>
       <div className="header-wrapper-home">
