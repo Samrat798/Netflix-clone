@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FirebaseContext } from "../components/context/FirebaseContext";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Footer from "../components/Footer/Footer";
 import "../components/homepage/Home.css";
 import Logo from "../components/homepage/Logo";
@@ -11,7 +12,6 @@ import SignFormInput from "../components/signin/SignFormInput";
 
 function SignInPage() {
   const navigate = useNavigate();
-  const { firebase } = useContext(FirebaseContext);
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -21,16 +21,11 @@ function SignInPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(emailAddress, password)
-      .then(() => {
-        setEmailAddress("");
-        setPassword("");
-        navigate("/browse");
+    signInWithEmailAndPassword(auth, emailAddress, password)
+      .then(async (Res) => {
+        navigate("/home");
       })
-      .catch((error) => setError(error.message));
+      .catch((err) => setError(err.message));
   }
   return (
     <>
@@ -39,7 +34,7 @@ function SignInPage() {
           <Logo />
         </Navbar>
         <div className="form-container">
-          <SignFormBase onSubmit={handleSubmit} method="POST">
+          <SignFormBase>
             <h2 className="warning">NOT officeal Netflix</h2>
             <h1 className="form-title">Sign In</h1>
             {error ? <div className="form-error">{error}</div> : null}
@@ -57,7 +52,11 @@ function SignInPage() {
               onChange={({ target }) => setPassword(target.value)}
             />
           </SignFormBase>
-          <button className="form-Button" type="submit" disabled={IsInvalid}>
+          <button
+            className="form-Button"
+            onClick={handleSubmit}
+            disabled={IsInvalid}
+          >
             Sign In
           </button>
           <p className="form-text">

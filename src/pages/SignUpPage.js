@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FirebaseContext } from "../components/context/FirebaseContext";
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import Footer from "../components/Footer/Footer";
 import "../components/homepage/Home.css";
 import Logo from "../components/homepage/Logo";
@@ -11,7 +12,6 @@ import SignFormInput from "../components/signin/SignFormInput";
 
 function SignUpPage() {
   const navigate = useNavigate();
-  const { firebase } = useContext(FirebaseContext);
 
   const [firstName, setFirstName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -20,25 +20,23 @@ function SignUpPage() {
 
   const IsInvalid = password === "" || emailAddress === "" || firstName === "";
 
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(emailAddress, password)
-      .then((result) =>
-        result.user
-          .updateProfile({
-            displayName: firstName,
-          })
-          .then(() => {
-            setFirstName("");
-            setEmailAddress("");
-            setPassword("");
-            navigate("/browse");
-          })
-      )
-      .catch((error) => setError(error.message));
+  function handleSubmit() {
+    // if (firstName || emailAddress || password) {
+    //   setError("Fill all fields");
+    //   return;
+    // }
+    setError("");
+    createUserWithEmailAndPassword(auth, emailAddress, password)
+      .then(async (res) => {
+        const user = res.user;
+        await updateProfile(user, {
+          displayName: firstName,
+        });
+        navigate("/home");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   }
   return (
     <>
@@ -47,7 +45,7 @@ function SignUpPage() {
           <Logo />
         </Navbar>
         <div className="form-container">
-          <SignFormBase onSubmit={handleSubmit} method="POST">
+          <SignFormBase>
             <h2 className="warning">NOT officeal Netflix</h2>
             <h1 className="form-title">Sign Up</h1>
             {error ? <div className="form-error">{error}</div> : null}
@@ -71,7 +69,11 @@ function SignUpPage() {
               onChange={({ target }) => setPassword(target.value)}
             />
           </SignFormBase>
-          <button className="form-Button" type="submit" disabled={IsInvalid}>
+          <button
+            className="form-Button"
+            onClick={handleSubmit}
+            disabled={IsInvalid}
+          >
             Sign Up
           </button>
           <p className="form-text">

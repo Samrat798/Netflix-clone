@@ -47,7 +47,6 @@ function Row({ title, fetchUrl, isLargeRow }) {
     <div className="row">
       <div className="row-head">
         <h2>{title}</h2>
-        <button className="btn explore-all">Explore All</button>
       </div>
       <div className="row__posters">
         {movies.map((movie) => (
